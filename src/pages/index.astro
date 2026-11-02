@@ -1,0 +1,119 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArticleList from '../components/ArticleList.astro';
+import { articles, articleUrl } from '../lib/content';
+const [projects, notes, essays] = await Promise.all([articles('projects'), articles('notes'), articles('essays')]);
+---
+<BaseLayout>
+<main class="wrap" id="main">
+    <section class="hero" id="home" aria-labelledby="hero-title">
+      <div>
+        <div class="eyebrow"><span class="dot" aria-hidden="true"></span> A PERSONAL SPACE FOR WORK & CURIOSITY</div>
+        <h1 id="hero-title">写代码，也追问<br><span>系统为何如此运作。</span></h1>
+        <p class="hero-desc">我从事软件开发，目前主要与航空数据和后台系统打交道。工作之外，我喜欢研究计算机系统、人工智能，以及那些一开始并没有清楚答案的问题。这里存放一些工程实践、阶段性的理解，还有偶尔不属于技术的想法。</p>
+        <div class="hero-actions">
+          <a class="button-primary" href="#work">看看做过的事 ↘</a>
+          <a class="text-link" href="#notes">一些正在思考的问题 ↗</a>
+        </div>
+      </div>
+      <aside class="side-note" aria-label="关于记录的想法">
+        <div class="side-kicker">FIELD NOTES / 001</div>
+        <div class="side-quote">比起只留下答案，<br>我也想记住<br>自己是怎样抵达答案的。</div>
+        <div class="side-footer"><span>ENGINEERING · LEARNING · LIFE</span><span>↗</span></div>
+      </aside>
+    </section>
+
+    <section class="section" id="about" aria-labelledby="about-title">
+      <div class="section-index"><strong>01</strong><span>ABOUT / 关于</span></div>
+      <div>
+        <h2 id="about-title">一个以工程为起点，<br>但兴趣不止于工程的人。</h2>
+        <div class="body-copy">
+          <p>我有计算机科学与技术的学习背景，目前从事航空数据相关的软件开发。日常工作涉及 Java / Spring Boot、Oracle、SQLite，以及多期结构化数据的比对、迁移和校验。</p>
+          <p>比起技术名词本身，我更在意它们为何这样设计：索引如何改变查询成本，数据如何在版本之间保持一致，模型的推理与外部记忆又是怎样协作的。</p>
+          <p>这个网站既是一份可以对外介绍自己的档案，也是一处缓慢更新的记录。不是所有探索都有结论；有些问题值得先保留下来。</p>
+        </div>
+        <div class="focus-tags" aria-label="关注方向">
+          <span class="tag">Software Engineering</span>
+          <span class="tag">Data Systems</span>
+          <span class="tag">Retrieval & AI</span>
+          <span class="tag">Learning by Questioning</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="work" aria-labelledby="work-title">
+      <div class="section-index"><strong>02</strong><span>SELECTED WORK / 实践</span></div>
+      <div>
+        <h2 id="work-title">一些正在做，或认真做过的事。</h2>
+        <p class="section-lead">不追求列出所有技术栈，只记录问题、方法和逐渐形成的经验。</p>
+        <div class="projects">
+          {projects.map((entry) => (
+            <article class="project">
+              <div class="project-meta"><span>{entry.data.eyebrow ?? 'PROJECT'}</span><span class="project-status">{entry.data.status}</span></div>
+              <h3><a href={articleUrl(entry)}>{entry.data.title}</a></h3>
+              <p>{entry.data.description}</p>
+              <div class="project-stack">{entry.data.tags.map((tag) => <span>{tag}</span>)}</div>
+            </article>
+          ))}
+        </div>
+        <p class="section-more"><a class="text-link" href="/projects/">全部项目与实践 ↗</a></p>
+        <p class="disclaimer">说明：这里展示的是可公开概述的技术实践与探索方向，不包含公司内部源码、业务数据或未公开的交付细节。</p>
+      </div>
+    </section>
+
+    <section class="section" id="notes" aria-labelledby="notes-title">
+      <div class="section-index"><strong>03</strong><span>NOTES / 思考</span></div>
+      <div>
+        <h2 id="notes-title">还在追问的一些问题。</h2>
+        <p class="section-lead">比起急着给出漂亮的结论，我希望先把问题问清楚。</p>
+        {notes.length > 0 ? <ArticleList entries={notes.slice(0, 3)} /> : (
+          <Fragment>
+        <div class="note-list">
+          <div class="note">
+            <div><div class="note-title">模型推理时，究竟发生了哪些计算？</div><div class="note-desc">Transformer、KV Cache、CPU/GPU 与外部记忆的边界</div></div>
+            <span class="note-status">待整理</span>
+          </div>
+          <div class="note">
+            <div><div class="note-title">索引为什么快？又在什么情况下不值得？</div><div class="note-desc">Hash、B-Tree、HNSW 与时间 / 空间的取舍</div></div>
+            <span class="note-status">待整理</span>
+          </div>
+          <div class="note">
+            <div><div class="note-title">不断变化的数据，怎样维持可信的检索结果？</div><div class="note-desc">版本、生效时间、来源追溯与检索评估</div></div>
+            <span class="note-status">待整理</span>
+          </div>
+        </div>
+        <p class="disclaimer">这里目前是计划整理的主题，并非已经发表的文章。未来会逐步替换成实际笔记。</p>
+          </Fragment>
+        )}
+        <p class="section-more"><a class="text-link" href="/notes/">全部学习笔记 ↗</a></p>
+      </div>
+    </section>
+
+    <section class="section" id="essays" aria-labelledby="essays-title">
+      <div class="section-index"><strong>04</strong><span>ESSAYS / 随笔</span></div>
+      <div>
+        <h2 id="essays-title">偶尔，也写一些技术之外的事。</h2>
+        <p class="section-lead">生活观察、阅读，以及那些值得慢慢想清楚的念头。</p>
+        <ArticleList entries={essays.slice(0, 3)} />
+        <p class="section-more"><a class="text-link" href="/essays/">全部随笔与文稿 ↗</a></p>
+      </div>
+    </section>
+
+    <section class="section" id="now" aria-labelledby="now-title">
+      <div class="section-index"><strong>05</strong><span>NOW / 近况</span></div>
+      <div>
+        <h2 id="now-title">最近在做什么。</h2>
+        <div class="now-grid">
+          <div class="now-panel">
+            <small>AT WORK</small>
+            <p>继续处理航空数据相关的比对、迁移和校验，也在思考怎样让这类系统未来更好地与检索和 Agent 协作。</p>
+          </div>
+          <div class="now-panel">
+            <small>OFF WORK</small>
+            <p>学习计算机基础、系统原理与 AI 相关问题；偶尔也记录一些尚未完全成形、但值得慢慢想清楚的念头。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

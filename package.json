@@ -1,0 +1,17 @@
+{
+  "name": "hunt-it-down-homepage",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22.23.4" },
+  "scripts": {
+    "dev": "astro dev",
+    "check": "astro check",
+    "build": "astro build",
+    "preview": "astro preview",
+    "test:site": "node scripts/check-site.mjs",
+    "verify": "npm run check && npm run build && npm run test:site"
+  },
+  "dependencies": { "astro": "7.4.4" },
+  "devDependencies": { "@astrojs/check": "0.9.12", "typescript": "~6.0.3" }
+}

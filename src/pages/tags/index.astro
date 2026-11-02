@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { articles, articleTags, tagUrl } from '../../lib/content';
+const entries = await articles();
+const tags = articleTags(entries);
+---
+<BaseLayout title="Tags · 标签 — Hunt it down">
+  <main class="wrap content-page" id="main">
+    <header class="page-heading"><div class="eyebrow">INDEX / 标签</div><h1>从一个主题开始。</h1><p>把不同栏目里相关的记录放在一起。</p></header>
+    <div class="tag-list">{tags.map((tag) => <a class="tag" href={tagUrl(tag)}>{tag} · {entries.filter((entry) => entry.data.tags.includes(tag)).length}</a>)}</div>
+    {!tags.length && <p class="empty-state">公开文章的标签会出现在这里。</p>}
+  </main>
+</BaseLayout>
