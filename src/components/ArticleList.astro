@@ -1,0 +1,21 @@
+---
+import { articleUrl, sections, tagUrl, type Article } from '../lib/content';
+interface Props { entries: Article[]; }
+const { entries } = Astro.props;
+---
+{entries.length ? (
+  <div class="article-list">
+    {entries.map((entry) => (
+      <article class="article-item">
+        <div class="article-meta">
+          <a href={`/${entry.collection}/`}>{sections[entry.collection].label}</a>
+          {entry.data.date && <time datetime={entry.data.date}>{entry.data.date}</time>}
+          {entry.data.status && <span class="project-status">{entry.data.status}</span>}
+        </div>
+        <h2><a href={articleUrl(entry)}>{entry.data.title}<span aria-hidden="true"> ↗</span></a></h2>
+        <p>{entry.data.description}</p>
+        {entry.data.tags.length > 0 && <div class="tag-list">{entry.data.tags.map((tag) => <a class="tag" href={tagUrl(tag)}>{tag}</a>)}</div>}
+      </article>
+    ))}
+  </div>
+) : <p class="empty-state">这里还没有公开文章。等有值得留下的内容，再慢慢更新。</p>}

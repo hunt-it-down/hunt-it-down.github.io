@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleList from '../../components/ArticleList.astro';
+import { articles, articleTags, tagId } from '../../lib/content';
+export async function getStaticPaths() {
+  const entries = await articles();
+  return articleTags(entries).map((tag) => ({ params: { tag: tagId(tag) }, props: { tag, entries: entries.filter((entry) => entry.data.tags.includes(tag)) } }));
+}
+const { tag, entries } = Astro.props;
+---
+<BaseLayout title={`${tag} · 标签 — Hunt it down`}>
+  <main class="wrap content-page" id="main">
+    <header class="page-heading"><div class="eyebrow">TAG / {entries.length} 篇公开内容</div><h1>{tag}</h1><a class="text-link" href="/tags/">← 所有标签</a></header>
+    <ArticleList entries={entries} />
+  </main>
+</BaseLayout>
